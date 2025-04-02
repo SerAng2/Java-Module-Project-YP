@@ -2,49 +2,43 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
+        Race race = new Race();
+        Car[] cars = new Car[3];
 
-        Car[] carArray = new Car[3];
-        for (int i = 0; carArray.length > i; i++) {
-            System.out.println("Введите название машины №" + (i + 1) + ":");
-            String name = scanner.nextLine();
+        for (int i = 0; i < cars.length; i++) {
+            System.out.print("Введите название автомобиля " + (i + 1) + ": ");
+            String carName = scanner.nextLine();
             int speed;
-            do {
-                System.out.println("Введите скорость машины №" + (i + 1) + ":");
+
+
+            while (true) {
+                System.out.print("Введите скорость автомобиля (0-250): ");
                 speed = scanner.nextInt();
-                scanner.nextLine();
-                if (speed <= 0 || speed > 250) {
-                    System.out.println("Неправильная скорость");
+
+                if (speed >= 0 && speed <= 250) {
+                    break;
+                } else {
+                    System.out.println("Ошибка: скорость должна быть от 0 до 250. Попробуйте снова.");
                 }
-            } while (speed <= 0 || speed > 250);
-            carArray[i] = new Car(name, speed);
-        }
-        int maxDistance = 0;
-        String leaderName = "";
-
-        for (Car car : carArray) {
-            int distance = car.calculateDistance(24);
-            if (distance > maxDistance) {
-                maxDistance = distance;
-                leaderName = car.name;
             }
+            scanner.nextLine();
+
+
+            cars[i] = new Car(carName, speed);
+
+            race.determineLeader(cars[i]);
         }
-        System.out.println("Самая быстрая машины: " + leaderName);
+
+
+        System.out.println("Победитель гонки: " + race.getCurrentLeader());
+        scanner.close();
     }
+
 }
 
-class Car {
-    String name;
-    int speed;
 
-    Car(String name, int speed) {
-        this.name = name;
-        this.speed = speed;
-    }
 
-    public int calculateDistance(int hours) {
-        return speed * hours;
-    }
-}
+
+
 
